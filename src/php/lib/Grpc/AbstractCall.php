@@ -44,6 +44,7 @@ abstract class AbstractCall
      * @var Call
      */
     protected $call;
+    protected $serialize;
     protected $deserialize;
     protected $metadata;
     protected $trailing_metadata;
@@ -61,6 +62,7 @@ abstract class AbstractCall
     public function __construct(
         Channel $channel,
         $method,
+        $serialize,
         $deserialize,
         array $options = []
     ) {
@@ -74,6 +76,7 @@ abstract class AbstractCall
             $deadline = Timeval::infFuture();
         }
         $this->call = new Call($channel, $method, $deadline);
+        $this->serialize = $serialize;
         $this->deserialize = $deserialize;
         $this->metadata = null;
         $this->trailing_metadata = null;
@@ -128,14 +131,16 @@ abstract class AbstractCall
      * @return string The protobuf binary format
      */
     protected function serializeMessage($data)
-    {
-        // Proto3 implementation
-        if (method_exists($data, 'encode')) {
-            return $data->encode();
-        }
+    {        
+        if (is_array($this->serialize)) {
+            list($className, $serializeFunc) = $this->serialize;
+            $obj = new $className();
+            $obj->$serializeFunc($data);
 
-        // Protobuf-PHP implementation
-        return $data->serialize();
+            return $obj;
+        }
+        
+        return $data->{$this->serialize}();
     }
 
     /**

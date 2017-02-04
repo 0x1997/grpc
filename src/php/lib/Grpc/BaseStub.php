@@ -237,12 +237,14 @@ class BaseStub
      */
     public function _simpleRequest($method,
                                    $argument,
+                                   $serialize,
                                    $deserialize,
                                    array $metadata = [],
                                    array $options = [])
     {
         $call = new UnaryCall($this->channel,
                               $method,
+                              $serialize,
                               $deserialize,
                               $options);
         $jwt_aud_uri = $this->_get_jwt_aud_uri($method);
