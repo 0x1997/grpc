@@ -100,7 +100,7 @@ void PrintMethod(const MethodDescriptor *method, Printer *out) {
     }
     out->Print(vars,
                "'/$service_name$/$name$',\n"
-               "$$argument,\n"
+               "$$argument, 'encode',\n"
                "['\\$output_type_id$', 'decode'],\n"
                "$$metadata, $$options);\n");
   }

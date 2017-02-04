@@ -54,7 +54,7 @@ namespace Helloworld {
     public function SayHello(\Helloworld\HelloRequest $argument,
       $metadata = [], $options = []) {
       return $this->_simpleRequest('/helloworld.Greeter/SayHello',
-      $argument,
+      $argument, 'encode',
       ['\Helloworld\HelloReply', 'decode'],
       $metadata, $options);
     }

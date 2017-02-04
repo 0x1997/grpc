@@ -285,6 +285,7 @@ class DummyInvalidClient extends \Grpc\BaseStub
     {
         return $this->_simpleRequest('invalidMethodName',
                                      $argument,
+                                     'encode',
                                      function () {},
                                      $metadata,
                                      $options);
